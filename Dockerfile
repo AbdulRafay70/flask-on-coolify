@@ -1,22 +1,16 @@
-FROM python:3.12-slim
+FROM ghcr.io/railwayapp/nixpacks:ubuntu-1741046653
 
-# Set working directory
 WORKDIR /app
 
-# Install system dependencies (just in case)
-RUN apt-get update && apt-get install -y --no-install-recommends gcc
-
-# Copy files
+# Copy your code
 COPY . .
 
-# Upgrade pip (this pip is global and guaranteed to exist)
-RUN pip install --upgrade pip
+# Install Python and pip
+RUN apt-get update && \
+    apt-get install -y python3 python3-pip
 
-# Install Python dependencies
-RUN pip install -r requirements.txt
+# Install requirements
+RUN pip3 install --upgrade pip && \
+    pip3 install -r requirements.txt
 
-# Expose port (Coolify listens to this)
-EXPOSE 5000
-
-# Start the app using gunicorn (if you're using Flask app: app.py with app = Flask(...))
-CMD ["gunicorn", "-b", "0.0.0.0:5000", "app:app"]
+CMD ["python3", "app.py"]
