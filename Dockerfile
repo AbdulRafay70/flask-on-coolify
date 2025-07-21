@@ -3,11 +3,14 @@ FROM python:3.12-slim
 WORKDIR /app
 COPY . .
 
-# Upgrade pip globally (not in /opt/venv)
-RUN pip install --upgrade pip
+# Create virtual environment
+RUN python -m venv /opt/venv
 
-# Now install dependencies globally
-RUN pip install -r requirements.txt
+# Activate venv and upgrade pip
+RUN /opt/venv/bin/pip install --upgrade pip
 
-CMD ["python", "app.py"]
+# Install requirements into venv
+RUN /opt/venv/bin/pip install -r requirements.txt
 
+# Make sure the app runs using venv Python
+CMD ["/opt/venv/bin/python", "app.py"]
