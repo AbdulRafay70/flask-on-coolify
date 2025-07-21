@@ -4,4 +4,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return "🚀 Flask App running on Coolify with a custom domain!"
+    return "It works!"
+
+if __name__ == "__main__":
+    app.run()
